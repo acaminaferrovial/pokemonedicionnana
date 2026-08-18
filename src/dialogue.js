@@ -44,7 +44,13 @@ const DialogueEngine = {
 
   _hide() {
     const box = document.getElementById('dialogue-box');
-    if (box) box.classList.remove('visible');
+    if (box) {
+      box.classList.remove('visible');
+      if (box._skipHandler) {
+        box.removeEventListener('click', box._skipHandler);
+        box._skipHandler = null;
+      }
+    }
     this._stopTypewriter();
   },
 
@@ -126,9 +132,10 @@ const DialogueEngine = {
       }
     }, this._speed);
 
-    // Click to skip typewriter
+    // Click to skip typewriter — remove OLD handler first to avoid accumulation
     const box = document.getElementById('dialogue-box');
     if (box) {
+      if (box._skipHandler) box.removeEventListener('click', box._skipHandler);
       box._skipHandler = (e) => {
         e.stopPropagation();
         if (this._charIdx < this._fullText.length) {
@@ -142,7 +149,6 @@ const DialogueEngine = {
           this._advance();
         }
       };
-      box.removeEventListener('click', box._skipHandler);
       box.addEventListener('click', box._skipHandler);
     }
   },
