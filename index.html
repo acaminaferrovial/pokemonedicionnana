@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Pokémon: Edición Bizcochín ♥</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-wrapper">
+
+  <!-- ══ TITLE SCREEN ═══════════════════════════════════════ -->
+  <div id="title-screen" class="screen">
+    <canvas id="title-canvas" width="800" height="600"></canvas>
+    <div class="title-content">
+      <div id="title-logo">POKÉMON</div>
+      <div id="title-edition">✦ Edición Bizcochín ✦</div>
+      <div id="title-subtitle">Una aventura especial para Cristina</div>
+      <div class="title-btn-group">
+        <button id="btn-new-game" class="btn-title">Nueva Aventura</button>
+        <button id="btn-load-game" class="btn-title-sec" style="display:none">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STARTER SELECTION ══════════════════════════════════ -->
+  <div id="starter-screen" class="screen">
+    <div id="starter-prompt">¡ELIGE TU COMPAÑERO DE AVENTURA!</div>
+    <div id="starter-sub">Tu primer Pokémon te acompañará en toda la aventura.</div>
+    <div id="starter-row"></div>
+  </div>
+
+  <!-- ══ SCENE SCREEN ═══════════════════════════════════════ -->
+  <div id="scene-screen" class="screen">
+    <canvas id="scene-canvas" width="800" height="600"></canvas>
+    <div id="scene-layer"></div>
+
+    <!-- HUD -->
+    <div id="hud">
+      <span id="hud-location">Villa Bizcochín</span>
+      <div class="hud-btn-group">
+        <button class="btn-hud" onclick="hudEquipo()">Equipo</button>
+        <button class="btn-hud" onclick="hudMochila()">Mochila</button>
+        <button class="btn-hud" onclick="hudGuardar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BATTLE SCREEN ══════════════════════════════════════ -->
+  <div id="battle-screen" class="screen">
+    <!-- Field -->
+    <div id="battle-scene-area">
+      <canvas id="battle-bg-canvas" width="800" height="250"></canvas>
+
+      <!-- Enemy sprite -->
+      <div id="b-enemy-sprite"></div>
+
+      <!-- Player sprite -->
+      <div id="b-player-sprite"></div>
+
+      <!-- Enemy status box -->
+      <div class="b-status-box" id="b-enemy-status">
+        <div class="b-name-row">
+          <span class="b-pname" id="b-enemy-name">???</span>
+          <span class="b-lv" id="b-enemy-lv">Nv.?</span>
+        </div>
+        <div class="b-hp-bar-wrap">
+          <span class="b-hp-label">PS</span>
+          <div class="b-hp-track">
+            <div class="b-hp-fill" id="b-enemy-hp-fill" style="width:100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player status box -->
+      <div class="b-status-box" id="b-player-status">
+        <div class="b-name-row">
+          <span class="b-pname" id="b-player-name">???</span>
+          <span class="b-lv" id="b-player-lv">Nv.?</span>
+        </div>
+        <div class="b-hp-bar-wrap">
+          <span class="b-hp-label">PS</span>
+          <div class="b-hp-track">
+            <div class="b-hp-fill" id="b-player-hp-fill" style="width:100%"></div>
+          </div>
+        </div>
+        <div id="b-hp-nums">?/?</div>
+      </div>
+    </div>
+
+    <!-- Battle UI -->
+    <div id="battle-bottom">
+      <div id="battle-text-panel">¡Listo para combatir!</div>
+      <div id="battle-move-grid">
+        <!-- Populated dynamically by BattleEngine -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RITUAL SCREEN ══════════════════════════════════════ -->
+  <div id="ritual-screen" class="screen">
+    <canvas id="ritual-canvas" width="800" height="600"></canvas>
+    <div id="ritual-ui">
+      <!-- Sintonía bar -->
+      <div id="ritual-sintonia-box">
+        <div id="ritual-sintonia-label">✦ SINTONÍA DE AMOR ✦</div>
+        <div id="ritual-bar-track">
+          <div id="ritual-bar-fill"></div>
+        </div>
+        <div id="ritual-sintonia-pct">0%</div>
+        <div id="ritual-msg">Bizcochín aparece entre las estrellas...</div>
+      </div>
+      <!-- Actions -->
+      <div id="ritual-action-row">
+        <button class="btn-ritual" id="ritual-btn-nana">
+          <span class="ritual-icon">🎵</span>
+          CANTAR NANA
+        </button>
+        <button class="btn-ritual" id="ritual-btn-caricia">
+          <span class="ritual-icon">🤲</span>
+          CARICIA CÁLIDA
+        </button>
+        <button class="btn-ritual" id="ritual-btn-promesa">
+          <span class="ritual-icon">⭐</span>
+          PROMESA
+        </button>
+        <button class="btn-ritual" id="ritual-btn-ball" disabled>
+          <span class="ritual-icon">🌟</span>
+          NANA BALL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DIALOGUE BOX (overlay, appears on any screen) ═════ -->
+  <div id="dialogue-box">
+    <div id="dlg-portrait-wrap"></div>
+    <div id="dlg-content">
+      <div id="dlg-speaker"></div>
+      <div id="dlg-text"></div>
+      <div id="dlg-cursor">▼</div>
+    </div>
+    <div id="dlg-choices"></div>
+  </div>
+
+  <!-- ══ INVENTORY PANEL ════════════════════════════════════ -->
+  <div id="inventory-panel">
+    <div class="inv-box">
+      <div class="panel-header">
+        <span class="panel-title">MOCHILA</span>
+        <button class="btn-close" onclick="Game.closeInventory()">✕</button>
+      </div>
+      <div class="inv-body"></div>
+    </div>
+  </div>
+
+  <!-- ══ TEAM PANEL ═════════════════════════════════════════ -->
+  <div id="team-panel">
+    <div class="team-box">
+      <div class="panel-header">
+        <span class="panel-title">EQUIPO POKÉMON</span>
+        <button class="btn-close" onclick="Game.closeTeam()">✕</button>
+      </div>
+      <div class="team-grid"></div>
+    </div>
+  </div>
+
+  <!-- ══ POKÉDEX PANEL ══════════════════════════════════════ -->
+  <div id="pokedex-panel">
+    <div class="pokedex-box">
+      <div class="pokedex-top">
+        <div class="pokedex-light"></div>
+        <div class="pokedex-light sm red-sm"></div>
+        <div class="pokedex-light sm yellow-sm"></div>
+        <div class="pokedex-light sm green-sm"></div>
+        <span class="pokedex-title">POKÉDEX BIZCOCHÍN</span>
+      </div>
+      <div class="pokedex-body"></div>
+      <div class="pokedex-footer">
+        <button class="btn-gold" onclick="Game.closePokedex()">Cerrar Pokédex</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CARTA / LETTER PANEL ═══════════════════════════════ -->
+  <div id="letter-panel">
+    <div class="letter-box">
+      <div class="letter-paper"></div>
+      <div class="letter-footer">
+        <button class="btn-gold" onclick="Game.closeLetter()">Guardar en el corazón ♥</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ═══════════════════════════════════════════════ -->
+  <div id="toast"></div>
+
+  <!-- ══ FADE OVERLAY ════════════════════════════════════════ -->
+  <div id="fade-overlay"></div>
+
+</div><!-- #game-wrapper -->
+
+<!-- ── Data (load first) ─────────────────────────────────── -->
+<script src="data/pokemon.js"></script>
+<script src="data/items.js"></script>
+<script src="data/story.js"></script>
+<!-- ── Engine ────────────────────────────────────────────── -->
+<script src="src/sprites.js"></script>
+<script src="src/render.js"></script>
+<script src="src/dialogue.js"></script>
+<script src="src/battle.js"></script>
+<script src="src/ritual.js"></script>
+<script src="src/engine.js"></script>
+<script>window.addEventListener('load', () => Game.init());</script>
+</body>
+</html>
