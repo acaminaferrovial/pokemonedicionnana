@@ -19,7 +19,7 @@ const Game = {
 
   // ── MOVEMENT STATE (not saved) ─────────────────────────────
   _keys: {},
-  _loopId: null,
+  _loopRunning: false,
   _nearItem: null,
   _transitioning: false,
 
@@ -798,28 +798,33 @@ const Game = {
   _updatePlayerEl() {
     const el = document.getElementById('player-char');
     if (!el) return;
-    const { x, y } = this.state.playerPos;
-    el.style.left = x + 'px';
-    el.style.top  = y + 'px';
+    const pos = this.state.playerPos || { x: 400, y: 430 };
+    el.style.left = pos.x + 'px';
+    el.style.top  = pos.y + 'px';
   },
 
   _startLoop() {
-    if (this._loopId) return;
-    const tick = () => {
+    if (this._loopRunning) return;
+    this._loopRunning = true;
+    const step = () => {
+      if (!this._loopRunning) return;   // stopped — don't reschedule
       this._tick();
-      this._loopId = requestAnimationFrame(tick);
+      requestAnimationFrame(step);
     };
-    this._loopId = requestAnimationFrame(tick);
+    requestAnimationFrame(step);
   },
 
   _stopLoop() {
-    if (this._loopId) { cancelAnimationFrame(this._loopId); this._loopId = null; }
+    this._loopRunning = false;
+    this._nearItem = null;
+    this._showPrompt(null);
   },
 
   _tick() {
     if (this.state.screen !== 'scene-screen') return;
     if (this._dialogueOpen() || this._transitioning) return;
 
+    if (!this.state.playerPos) this.state.playerPos = { x: 400, y: 430 };
     const spd = 3;
     let { x, y } = this.state.playerPos;
 
@@ -916,13 +921,16 @@ const Game = {
     this._keys[e.code] = true;
     if (e.code === 'Space' || e.code === 'Enter') {
       e.preventDefault();
-      // Space also advances dialogue
+      // Space advances dialogue (works on any screen)
       if (this._dialogueOpen()) {
         const box = document.getElementById('dialogue-box');
         if (box && box._skipHandler) box._skipHandler(e);
         return;
       }
-      if (this._nearItem) this._triggerInteraction(this._nearItem);
+      // Interact with nearby NPC/object only while exploring
+      if (this.state.screen === 'scene-screen' && this._nearItem) {
+        this._triggerInteraction(this._nearItem);
+      }
     }
   },
 
