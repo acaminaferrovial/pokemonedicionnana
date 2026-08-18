@@ -9,7 +9,7 @@
 /* SVG sprites: fill their container (sprites have viewBox but no width/height) */
 .npc-sprite svg, .s-sprite svg, .tm-sprite svg,
 #dlg-portrait-wrap svg, #b-enemy-sprite svg, #b-player-sprite svg,
-.pokedex-entry-sprite svg {
+.pokedex-entry-sprite svg, #player-char svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -323,6 +323,40 @@ html, body {
 }
 .scene-exit:hover { background: rgba(245,158,11,0.25); }
 .scene-exit .exit-label { background: none; border: none; }
+
+/* ── PLAYER CHARACTER ────────────────────────────────────── */
+#player-char {
+  position: absolute;
+  width: 40px;
+  height: 56px;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  z-index: 8;
+  filter: drop-shadow(1px 3px 4px rgba(0,0,0,0.5));
+}
+#player-char svg { display: block; width: 100%; height: 100%; }
+
+/* ── INTERACTION PROMPT ─────────────────────────────────── */
+#interaction-prompt {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  background: rgba(10,5,20,0.85);
+  color: var(--clr-gold);
+  font-family: var(--font-game);
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--clr-gold);
+  pointer-events: none;
+  z-index: 12;
+  white-space: nowrap;
+  animation: prompt-bob 0.9s ease-in-out infinite;
+}
+@keyframes prompt-bob {
+  0%, 100% { transform: translate(-50%, -100%); }
+  50%       { transform: translate(-50%, calc(-100% - 5px)); }
+}
 
 /* ── HUD ─────────────────────────────────────────────────── */
 #hud {

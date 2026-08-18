@@ -6,6 +6,35 @@
 
 const SPRITES = {
 
+  // ── PLAYER CHARACTER ──────────────────────────────────
+  player: `<svg viewBox="0 0 40 56" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="20" cy="57" rx="11" ry="3.5" fill="rgba(0,0,0,0.22)"/>
+    <rect x="10" y="43" width="8" height="11" rx="3" fill="#1e40af"/>
+    <rect x="22" y="43" width="8" height="11" rx="3" fill="#1e40af"/>
+    <ellipse cx="14" cy="54" rx="6" ry="3" fill="#1e3a8a"/>
+    <ellipse cx="26" cy="54" rx="6" ry="3" fill="#1e3a8a"/>
+    <path d="M9 38 Q10 50 20 51 Q30 50 31 38 Z" fill="#be185d"/>
+    <rect x="11" y="25" width="18" height="16" rx="5" fill="#f43f5e"/>
+    <path d="M17 25 L20 30 L23 25" fill="none" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+    <rect x="3" y="26" width="9" height="13" rx="4.5" fill="#fdd8b5"/>
+    <rect x="28" y="26" width="9" height="13" rx="4.5" fill="#fdd8b5"/>
+    <rect x="16" y="20" width="8" height="7" rx="2" fill="#fdd8b5"/>
+    <ellipse cx="20" cy="13" rx="12" ry="12" fill="#fdd8b5"/>
+    <ellipse cx="8.5" cy="14" rx="5" ry="9" fill="#92400e"/>
+    <ellipse cx="31.5" cy="14" rx="5" ry="9" fill="#92400e"/>
+    <ellipse cx="20" cy="7" rx="12" ry="7" fill="#92400e"/>
+    <ellipse cx="20" cy="13" rx="11" ry="11" fill="#fdd8b5"/>
+    <ellipse cx="15" cy="14" rx="2.5" ry="3" fill="#1e293b"/>
+    <ellipse cx="25" cy="14" rx="2.5" ry="3" fill="#1e293b"/>
+    <circle cx="15.7" cy="13" r="1" fill="white"/>
+    <circle cx="25.7" cy="13" r="1" fill="white"/>
+    <ellipse cx="11" cy="17" rx="2.5" ry="1.5" fill="#fca5a5" opacity="0.75"/>
+    <ellipse cx="29" cy="17" rx="2.5" ry="1.5" fill="#fca5a5" opacity="0.75"/>
+    <path d="M17.5 19.5 Q20 21.5 22.5 19.5" stroke="#c05070" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <rect x="12" y="1" width="16" height="8" rx="4" fill="#f59e0b"/>
+    <ellipse cx="20" cy="5" rx="14" ry="4.5" fill="#d97706"/>
+  </svg>`,
+
   // ── POKÉMON ────────────────────────────────────────────
 
   torchic: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">

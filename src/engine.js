@@ -10,17 +10,26 @@ const Game = {
     screen: 'title',
     currentScene: null,
     starter: null,
-    team: [],          // array of pokemon IDs
-    inventory: {},     // item_id -> count (or true for unique)
-    flags: {},         // string -> true
+    team: [],
+    inventory: {},
+    flags: {},
     saveExists: false,
+    playerPos: { x: 400, y: 430 },
   },
+
+  // ── MOVEMENT STATE (not saved) ─────────────────────────────
+  _keys: {},
+  _loopId: null,
+  _nearItem: null,
+  _transitioning: false,
 
   // ── INIT ──────────────────────────────────────────────────
 
   init() {
     this._scaleGame();
     window.addEventListener('resize', () => this._scaleGame());
+    document.addEventListener('keydown', (e) => this._onKeyDown(e));
+    document.addEventListener('keyup',   (e) => { this._keys[e.code] = false; });
 
     this._checkSave();
     this._drawTitleCanvas();
@@ -48,6 +57,8 @@ const Game = {
     const el = document.getElementById(id);
     if (el) el.classList.add('active');
     this.state.screen = id;
+    if (id === 'scene-screen') this._startLoop();
+    else this._stopLoop();
   },
 
   // ── TITLE ─────────────────────────────────────────────────
@@ -78,6 +89,7 @@ const Game = {
       inventory: {},
       flags: {},
       saveExists: false,
+      playerPos: { x: 400, y: 430 },
     };
     this.fade(() => this._showIntro());
   },
@@ -249,6 +261,9 @@ const Game = {
       });
       layer.appendChild(el);
     });
+
+    // Player character
+    this._spawnPlayer();
   },
 
   // ── ACTION HANDLER ────────────────────────────────────────
@@ -761,6 +776,171 @@ const Game = {
       overlay.classList.add('fade-out');
       setTimeout(() => overlay.classList.remove('fade-out'), 450);
     }, 420);
+  },
+
+  // ── PLAYER MOVEMENT ───────────────────────────────────────
+
+  _spawnPlayer() {
+    const scene = SCENES[this.state.currentScene];
+    const layer = document.getElementById('scene-layer');
+    if (!layer) return;
+    const old = document.getElementById('player-char');
+    if (old) old.remove();
+    // Don't show player in cutscene-only scenes (no HUD)
+    if (!scene || scene.showHud === false) return;
+    const el = document.createElement('div');
+    el.id = 'player-char';
+    el.innerHTML = SPRITES['player'] || '';
+    layer.appendChild(el);
+    this._updatePlayerEl();
+  },
+
+  _updatePlayerEl() {
+    const el = document.getElementById('player-char');
+    if (!el) return;
+    const { x, y } = this.state.playerPos;
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+  },
+
+  _startLoop() {
+    if (this._loopId) return;
+    const tick = () => {
+      this._tick();
+      this._loopId = requestAnimationFrame(tick);
+    };
+    this._loopId = requestAnimationFrame(tick);
+  },
+
+  _stopLoop() {
+    if (this._loopId) { cancelAnimationFrame(this._loopId); this._loopId = null; }
+  },
+
+  _tick() {
+    if (this.state.screen !== 'scene-screen') return;
+    if (this._dialogueOpen() || this._transitioning) return;
+
+    const spd = 3;
+    let { x, y } = this.state.playerPos;
+
+    if (this._keys['KeyW'] || this._keys['ArrowUp'])    y -= spd;
+    if (this._keys['KeyS'] || this._keys['ArrowDown'])  y += spd;
+    if (this._keys['KeyA'] || this._keys['ArrowLeft'])  x -= spd;
+    if (this._keys['KeyD'] || this._keys['ArrowRight']) x += spd;
+
+    // Boundaries — top leaves room for HUD
+    x = Math.max(25,  Math.min(775, x));
+    y = Math.max(100, Math.min(545, y));
+
+    this.state.playerPos = { x, y };
+    this._updatePlayerEl();
+    this._checkProximity();
+  },
+
+  _dialogueOpen() {
+    const box = document.getElementById('dialogue-box');
+    return !!(box && box.classList.contains('visible'));
+  },
+
+  _checkProximity() {
+    if (this._transitioning) return;
+    const scene = SCENES[this.state.currentScene];
+    if (!scene) return;
+
+    const { x, y } = this.state.playerPos;
+    const TALK_R = 90;
+    const EXIT_R = 55;
+
+    let nearest = null;
+    let nearDist = Infinity;
+
+    // NPCs
+    (scene.npcs || []).forEach(npc => {
+      if (npc.flag    && this.state.flags[npc.flag])            return;
+      if (npc.oneshot && this.state.flags['npc_done_' + npc.id]) return;
+      const d = Math.hypot(x - npc.x / 100 * 800, y - npc.y / 100 * 600);
+      if (d < TALK_R && d < nearDist) { nearDist = d; nearest = { type: 'npc', data: npc }; }
+    });
+
+    // Objects
+    (scene.objects || []).forEach(obj => {
+      if (obj.flag    && this.state.flags[obj.flag])            return;
+      if (obj.oneshot && this.state.flags['obj_done_' + obj.id]) return;
+      const d = Math.hypot(x - obj.x / 100 * 800, y - obj.y / 100 * 600);
+      if (d < TALK_R && d < nearDist) { nearDist = d; nearest = { type: 'obj', data: obj }; }
+    });
+
+    this._nearItem = nearest;
+    this._showPrompt(nearest);
+
+    // Exits — auto-trigger at shorter radius (use for loop so we can return early)
+    for (const exit of (scene.exits || [])) {
+      if (exit.requireFlag && !this.state.flags[exit.requireFlag]) continue;
+      const d = Math.hypot(x - exit.x / 100 * 800, y - exit.y / 100 * 600);
+      if (d < EXIT_R) {
+        this._transitioning = true;
+        this._stopLoop();
+        // Entry position on the other side for the new scene
+        const entryX = exit.x < 30 ? 720 : exit.x > 70 ? 80 : 400;
+        this.state.playerPos = { x: entryX, y: 430 };
+        this.fade(() => {
+          this._transitioning = false;
+          this._loadScene(exit.target);
+          this._startLoop();
+        });
+        return;
+      }
+    }
+  },
+
+  _showPrompt(item) {
+    let el = document.getElementById('interaction-prompt');
+    if (!item) {
+      if (el) el.style.display = 'none';
+      return;
+    }
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'interaction-prompt';
+      const layer = document.getElementById('scene-layer');
+      if (layer) layer.appendChild(el);
+    }
+    el.style.display = '';
+    el.textContent = '▲ ESPACIO';
+    const { x, y } = this.state.playerPos;
+    el.style.left = x + 'px';
+    el.style.top  = (y - 80) + 'px';
+  },
+
+  _onKeyDown(e) {
+    this._keys[e.code] = true;
+    if (e.code === 'Space' || e.code === 'Enter') {
+      e.preventDefault();
+      // Space also advances dialogue
+      if (this._dialogueOpen()) {
+        const box = document.getElementById('dialogue-box');
+        if (box && box._skipHandler) box._skipHandler(e);
+        return;
+      }
+      if (this._nearItem) this._triggerInteraction(this._nearItem);
+    }
+  },
+
+  _triggerInteraction(item) {
+    if (!item) return;
+    const scene = SCENES[this.state.currentScene];
+    if (!scene) return;
+    if (item.type === 'npc') {
+      const npc = item.data;
+      if (npc.oneshot) this.state.flags['npc_done_' + npc.id] = true;
+      if (npc.dialogue) DialogueEngine.start(npc.dialogue, () => this._populateSceneLayer(scene));
+    } else if (item.type === 'obj') {
+      const obj = item.data;
+      if (obj.oneshot) this.state.flags['obj_done_' + obj.id] = true;
+      if (obj.dialogue) DialogueEngine.start(obj.dialogue, () => this._populateSceneLayer(scene));
+    }
+    this._showPrompt(null);
+    this._nearItem = null;
   },
 
   // ── TOAST ─────────────────────────────────────────────────
