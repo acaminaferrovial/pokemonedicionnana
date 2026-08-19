@@ -511,7 +511,7 @@ const SCENES = {
     showHud: true,
     onEnter: 'route1_enter',
     npcs: [
-      { id:'marcos_npc', label:'Entrenador Marcos', sprite:'marcos', x:62, y:40, dialogue:'marcos_pre', flag:'marcos_beaten', oneshot:true },
+      { id:'marcos_npc', label:'Entrenador Marcos', sprite:'marcos', x:62, y:40, dialogue:'marcos_pre', flag:'marcos_beaten' },
     ],
     objects: [
       { id:'bush1', label:'Arbusto brillante', icon:'✨', x:20, y:55, dialogue:'item_entrada_cine', flag:'got_entrada_cine', oneshot:true },
@@ -550,7 +550,7 @@ const SCENES = {
     npcs: [
       { id:'tile1', label:'Estatua Pollito 1', sprite:'statue', x:30, y:50, dialogue:'gym_tile1', flag:'tile1_done', oneshot:true },
       { id:'tile2', label:'Estatua Pollito 2', sprite:'statue', x:65, y:50, dialogue:'gym_tile2', flag:'tile2_done', oneshot:true },
-      { id:'valentin', label:'Líder Valentín', sprite:'valentin', x:50, y:25, dialogue:'valentin_pre', flag:'valentin_beaten', oneshot:true },
+      { id:'valentin', label:'Líder Valentín', sprite:'valentin', x:50, y:25, dialogue:'valentin_pre', flag:'valentin_beaten' },
     ],
     objects: [],
     exits: [
