@@ -9,6 +9,7 @@ const MOVE_DATA = {
   tackle:       { name:'PLACAJE',         type:'normal',   power:40,  pp:35 },
   quick_attack: { name:'ATAQUE RÁPIDO',   type:'normal',   power:40,  pp:30 },
   headbutt:     { name:'CABEZAZO',        type:'normal',   power:70,  pp:15 },
+  bite:         { name:'MORDISCO',        type:'normal',   power:60,  pp:25 },
   // Especiales
   ember:        { name:'ASCUAS',          type:'fire',     power:40,  pp:25 },
   flamethrower: { name:'LANZALLAMAS',     type:'fire',     power:90,  pp:15 },
