@@ -853,8 +853,16 @@ const Game = {
     if (!scene) return;
 
     const { x, y } = this.state.playerPos;
-    const TALK_R = 90;
+    const TALK_R = 150;
     const EXIT_R = 55;
+
+    // Use sprite centers, not feet, for more accurate proximity
+    // NPC sprites: 80px tall, transform:-100% → feet at y%, center at y% - 40px
+    // Player sprite: 56px tall, transform:-100% → feet at y, center at y - 28px
+    const NPC_HALF  = 40;
+    const PLR_HALF  = 28;
+    const OBJ_HALF  = 20;
+    const px = x, py = y - PLR_HALF;
 
     let nearest = null;
     let nearDist = Infinity;
@@ -863,7 +871,7 @@ const Game = {
     (scene.npcs || []).forEach(npc => {
       if (npc.flag    && this.state.flags[npc.flag])            return;
       if (npc.oneshot && this.state.flags['npc_done_' + npc.id]) return;
-      const d = Math.hypot(x - npc.x / 100 * 800, y - npc.y / 100 * 600);
+      const d = Math.hypot(px - npc.x / 100 * 800, py - (npc.y / 100 * 600 - NPC_HALF));
       if (d < TALK_R && d < nearDist) { nearDist = d; nearest = { type: 'npc', data: npc }; }
     });
 
@@ -871,7 +879,7 @@ const Game = {
     (scene.objects || []).forEach(obj => {
       if (obj.flag    && this.state.flags[obj.flag])            return;
       if (obj.oneshot && this.state.flags['obj_done_' + obj.id]) return;
-      const d = Math.hypot(x - obj.x / 100 * 800, y - obj.y / 100 * 600);
+      const d = Math.hypot(px - obj.x / 100 * 800, py - (obj.y / 100 * 600 - OBJ_HALF));
       if (d < TALK_R && d < nearDist) { nearDist = d; nearest = { type: 'obj', data: obj }; }
     });
 
