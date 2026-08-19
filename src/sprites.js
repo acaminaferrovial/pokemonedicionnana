@@ -173,28 +173,71 @@ const SPRITES = {
   </svg>`,
 
   bizcochin: `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="40" cy="50" rx="28" ry="24" fill="#fbbf24" opacity=".18"/>
-    <ellipse cx="40" cy="50" rx="24" ry="20" fill="#fbbf24" opacity=".25"/>
-    <path d="M40 28 Q38 14 34 10 Q40 18 46 10 Q42 14 40 28Z" fill="#fbbf24"/>
-    <circle cx="40" cy="52" r="22" fill="#fef08a"/>
-    <ellipse cx="40" cy="54" rx="14" ry="12" fill="#fef9c3"/>
-    <ellipse cx="22" cy="56" rx="8" ry="6" fill="#fef08a" transform="rotate(-20 22 56)"/>
-    <ellipse cx="58" cy="56" rx="8" ry="6" fill="#fef08a" transform="rotate(20 58 56)"/>
-    <ellipse cx="28" cy="70" rx="9" ry="6" fill="#fef08a"/>
-    <ellipse cx="52" cy="70" rx="9" ry="6" fill="#fef08a"/>
-    <circle cx="40" cy="38" r="18" fill="#fef08a"/>
-    <circle cx="30" cy="34" r="6" fill="white"/>
-    <circle cx="50" cy="34" r="6" fill="white"/>
-    <circle cx="31" cy="34" r="4" fill="#1a1a1a"/>
-    <circle cx="51" cy="34" r="4" fill="#1a1a1a"/>
-    <circle cx="32" cy="33" r="1.4" fill="white"/>
-    <circle cx="52" cy="33" r="1.4" fill="white"/>
-    <circle cx="22" cy="40" r="5" fill="#fb7185" opacity=".7"/>
-    <circle cx="58" cy="40" r="5" fill="#fb7185" opacity=".7"/>
-    <ellipse cx="40" cy="44" rx="4" ry="3" fill="#f59e0b"/>
-    <path d="M33 50 Q40 56 47 50" stroke="#d97706" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <circle cx="40" cy="14" r="5" fill="#fbbf24" opacity=".5"/>
-    <circle cx="40" cy="14" r="3" fill="#fde68a" opacity=".7"/>
+    <!-- Aura exterior -->
+    <circle cx="40" cy="44" r="34" fill="none" stroke="#fde68a" stroke-width="1" opacity=".4"/>
+    <circle cx="40" cy="44" r="29" fill="#fffbeb" opacity=".18"/>
+    <!-- Alas de luz -->
+    <ellipse cx="12" cy="40" rx="11" ry="7" fill="#fef9c3" opacity=".75" transform="rotate(-15 12 40)"/>
+    <ellipse cx="14" cy="48" rx="8" ry="5" fill="#fef9c3" opacity=".5" transform="rotate(-25 14 48)"/>
+    <ellipse cx="68" cy="40" rx="11" ry="7" fill="#fef9c3" opacity=".75" transform="rotate(15 68 40)"/>
+    <ellipse cx="66" cy="48" rx="8" ry="5" fill="#fef9c3" opacity=".5" transform="rotate(25 66 48)"/>
+    <!-- Cuerpo -->
+    <ellipse cx="40" cy="50" rx="20" ry="18" fill="#fef08a"/>
+    <ellipse cx="40" cy="53" rx="12" ry="10" fill="#fefce8"/>
+    <!-- Piernas -->
+    <ellipse cx="29" cy="66" rx="9" ry="6" fill="#fef08a"/>
+    <ellipse cx="51" cy="66" rx="9" ry="6" fill="#fef08a"/>
+    <ellipse cx="29" cy="69" rx="6" ry="3.5" fill="#fde68a"/>
+    <ellipse cx="51" cy="69" rx="6" ry="3.5" fill="#fde68a"/>
+    <!-- Brazos -->
+    <ellipse cx="20" cy="50" rx="9" ry="5" fill="#fef08a" transform="rotate(-25 20 50)"/>
+    <ellipse cx="60" cy="50" rx="9" ry="5" fill="#fef08a" transform="rotate(25 60 50)"/>
+    <!-- Cabeza -->
+    <circle cx="40" cy="33" r="19" fill="#fef08a"/>
+    <!-- Orejas redondeadas -->
+    <circle cx="24" cy="21" r="7" fill="#fef08a"/>
+    <circle cx="56" cy="21" r="7" fill="#fef08a"/>
+    <circle cx="24" cy="19" r="4.5" fill="#fde68a" opacity=".5"/>
+    <circle cx="56" cy="19" r="4.5" fill="#fde68a" opacity=".5"/>
+    <!-- Corona estrella legendaria -->
+    <circle cx="40" cy="11" r="8" fill="#fbbf24" opacity=".35"/>
+    <polygon points="40,3 42.4,9.2 49,9.2 43.8,13.2 45.9,19.5 40,15.8 34.1,19.5 36.2,13.2 31,9.2 37.6,9.2" fill="#f59e0b"/>
+    <polygon points="40,5.5 42,10.5 48,10.5 43.4,13.8 45.2,19 40,15.8 34.8,19 36.6,13.8 32,10.5 38,10.5" fill="#fde68a" opacity=".65"/>
+    <circle cx="40" cy="12" r="2.8" fill="#fbbf24"/>
+    <!-- Ojos grandes y expresivos -->
+    <circle cx="32" cy="32" r="7.5" fill="white"/>
+    <circle cx="48" cy="32" r="7.5" fill="white"/>
+    <circle cx="32" cy="32" r="5.5" fill="#1e3a5f"/>
+    <circle cx="48" cy="32" r="5.5" fill="#1e3a5f"/>
+    <circle cx="32" cy="32" r="3.8" fill="#111"/>
+    <circle cx="48" cy="32" r="3.8" fill="#111"/>
+    <!-- Brillo doble en ojos -->
+    <circle cx="33.8" cy="29.8" r="2.2" fill="white"/>
+    <circle cx="49.8" cy="29.8" r="2.2" fill="white"/>
+    <circle cx="35.5" cy="33.5" r="1" fill="white" opacity=".7"/>
+    <circle cx="51.5" cy="33.5" r="1" fill="white" opacity=".7"/>
+    <!-- Mofletes -->
+    <circle cx="21" cy="38" r="5.5" fill="#fb7185" opacity=".5"/>
+    <circle cx="59" cy="38" r="5.5" fill="#fb7185" opacity=".5"/>
+    <!-- Nariz -->
+    <ellipse cx="40" cy="39" rx="3.5" ry="2.5" fill="#f59e0b" opacity=".6"/>
+    <!-- Sonrisa -->
+    <path d="M31 45 Q40 53 49 45" stroke="#d97706" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Corazón en la barriga (el bebé) -->
+    <path d="M36.5 51.5 C36.5 49 38 47.5 40 50 C42 47.5 43.5 49 43.5 51.5 C43.5 54.5 40 57 40 57 C40 57 36.5 54.5 36.5 51.5Z" fill="#fb7185" opacity=".7"/>
+    <!-- Estrellas flotantes -->
+    <path d="M8 22 L9.2 26 L13.5 27 L9.2 28 L8 32 L6.8 28 L2.5 27 L6.8 26Z" fill="#fbbf24" opacity=".85"/>
+    <path d="M68 20 L69 24 L73 25 L69 26 L68 30 L67 26 L63 25 L67 24Z" fill="#fbbf24" opacity=".75"/>
+    <path d="M72 53 L72.8 56 L75.5 57 L72.8 58 L72 61 L71.2 58 L68.5 57 L71.2 56Z" fill="#f59e0b" opacity=".65"/>
+    <path d="M5 55 L5.7 57.5 L8.5 58.5 L5.7 59.5 L5 62 L4.3 59.5 L1.5 58.5 L4.3 57.5Z" fill="#fbbf24" opacity=".6"/>
+    <!-- Destellos pequeños -->
+    <circle cx="17" cy="15" r="1.5" fill="#fde68a" opacity=".9"/>
+    <circle cx="64" cy="17" r="1.5" fill="#fde68a" opacity=".85"/>
+    <circle cx="11" cy="64" r="1.2" fill="#fbbf24" opacity=".65"/>
+    <circle cx="69" cy="63" r="1.2" fill="#fbbf24" opacity=".65"/>
+    <circle cx="6" cy="38" r="1" fill="#fef9c3" opacity=".9"/>
+    <circle cx="74" cy="36" r="1" fill="#fef9c3" opacity=".9"/>
+    <circle cx="40" cy="75" r="1.5" fill="#fde68a" opacity=".5"/>
   </svg>`,
 
   // ── PERSONAJES ─────────────────────────────────────────
