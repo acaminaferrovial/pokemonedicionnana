@@ -114,7 +114,7 @@ const POKEMON_DEFS = {
 };
 
 function makeBattlePokemon(id) {
-  const d = POKEMON_DEFS[id];
+  const d = POKEMON_DEFS[id] || POKEMON_DEFS['torchic'];
   const lv = d.lv;
   const maxHp = Math.floor((d.hp * 2 * lv / 100) + lv + 10);
   return {

@@ -310,9 +310,8 @@ const Game = {
       case 'start_battle_marcos':
         this.state.flags['in_marcos_battle'] = true;
         setTimeout(() => {
-          this.showScreen('battle-screen');
           BattleEngine.start(
-            this.state.starter, 'growlithe', false, null,
+            this.state.starter || 'torchic', 'growlithe', false, null,
             () => {
               this.state.flags['marcos_beaten'] = true;
               this.state.flags['in_marcos_battle'] = false;
@@ -393,7 +392,7 @@ const Game = {
       case 'start_battle_valentin':
         setTimeout(() => {
           BattleEngine.start(
-            this.state.starter, 'chansey', false, null,
+            this.state.starter || 'torchic', 'chansey', false, null,
             () => {
               this.state.flags['valentin_beaten'] = true;
               this.showScreen('scene-screen');
@@ -464,7 +463,7 @@ const Game = {
       case 'start_battle_alberto':
         setTimeout(() => {
           BattleEngine.start(
-            this.state.starter, 'pikachu', true, null,
+            this.state.starter || 'torchic', 'pikachu', true, null,
             () => {
               this.state.flags['alberto_beaten'] = true;
               this.showScreen('scene-screen');
