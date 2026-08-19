@@ -54,6 +54,8 @@ const BattleEngine = {
   _setSprite(elId, pokemonId) {
     const el = document.getElementById(elId);
     if (!el) return;
+    el.className = '';      // clear shake/faint animation classes
+    el.style.opacity = '';  // reset any animation-fill residue
     el.innerHTML = SPRITES[pokemonId] || SPRITES['torchic'] || '';
     const svg = el.querySelector('svg');
     if (svg) { svg.style.width = '100%'; svg.style.height = '100%'; }
