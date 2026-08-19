@@ -693,19 +693,17 @@ const Game = {
 
     paper.innerHTML = `
       <div class="letter-title">💛 Para Cristina 💛</div>
-      <p>Cris,</p>
+      <p>Ñaña,</p>
       <br>
-      <p>Si estás leyendo esto, es que has llegado al final de esta pequeña aventura que preparé para ti.</p>
+      <p>Si estás leyendo esto es que has llegado al final de esta pequeña aventura que preparé para ti.</p>
       <br>
-      <p>Quería contártelo de una manera especial, porque tú siempre haces especial todo lo que tocas.</p>
+      <p>Quería contártelo de una manera especial, porque tú siempre haces todo por mí y me quieres mucho.</p>
       <br>
-      <p>Dentro de unos meses va a llegar alguien muy, muy especial. Nuestro Bizcochín.</p>
+      <p>Dentro de unos mesecitos Bizcochín estará a nuestro lado. Aún quedan cositas por hacer y sabes que tengo miedo, pero a tu lado me siento mucho más seguro.</p>
       <br>
-      <p>No sé si será pollito o pollita. No sé cómo será su risa, ni cómo serán sus manos. Pero ya te digo que va a ser la persona más amada que ha existido jamás, porque tú vas a ser su madre.</p>
+      <p>No sé si será pollito o pollita, pero con que se parezca a ti, será más que suficiente.</p>
       <br>
-      <p>Y yo voy a estar aquí. Para los dos.</p>
-      <br>
-      <p>Feliz cumpleaños, mi vida.</p>
+      <p>Te quiero ñaña. Para siempre.</p>
       <br>
       <p style="text-align:right;color:#b45309;font-style:italic">Con todo mi amor,<br><strong>Alberto</strong> 🐥</p>
     `;
